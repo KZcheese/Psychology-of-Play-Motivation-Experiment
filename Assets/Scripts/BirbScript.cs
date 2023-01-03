@@ -1,27 +1,28 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class BirbScript : MonoBehaviour {
-
     public Rigidbody2D birdRigidBody;
     public float flapStrength;
     public GameStateScript gameState;
+    private PlayerControls _controls;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        gameState = GameObject.FindObjectOfType<GameStateScript>();
+    private void OnEnable() {
+        _controls.Player.Enable();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Mouse0) && gameState.isAlive) {
+    private void OnDisable() {
+        _controls.Player.Disable();
+    }
+
+    void Awake() {
+        _controls = new PlayerControls();
+        _controls.Player.Flap.performed += _ => Flap();
+        // _controls.Player.Flap.performed += _ => Flap();
+    }
+
+    void Flap() {
+        if (gameState.isAlive)
             birdRigidBody.velocity = Vector2.up * flapStrength;
-        }
     }
 
     private void OnCollisionEnter2D(Collision2D col) {
@@ -34,7 +35,6 @@ public class BirbScript : MonoBehaviour {
 
     private void CheckDeath(GameObject obstacle) {
         if (!obstacle.CompareTag("Obstacle")) return;
-        gameState.gameOver();
+        gameState.GameOver();
     }
-    
 }
