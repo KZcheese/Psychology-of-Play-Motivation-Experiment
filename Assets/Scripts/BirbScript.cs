@@ -1,8 +1,10 @@
+using System;
 using UnityEngine;
 
 public class BirbScript : MonoBehaviour {
     public Rigidbody2D birdRigidBody;
     public float flapStrength;
+    public float startingFlaps;
     public GameStateScript gameState;
     private PlayerControls _controls;
 
@@ -20,21 +22,18 @@ public class BirbScript : MonoBehaviour {
         // _controls.Player.Flap.performed += _ => Flap();
     }
 
+    private void Start() {
+        birdRigidBody.velocity = Vector2.up * flapStrength * startingFlaps;
+    }
+
     void Flap() {
         if (gameState.isAlive)
             birdRigidBody.velocity = Vector2.up * flapStrength;
     }
 
     private void OnCollisionEnter2D(Collision2D col) {
-        CheckDeath(col.gameObject);
-    }
-
-    private void OnTriggerEnter2D(Collider2D col) {
-        CheckDeath(col.gameObject);
-    }
-
-    private void CheckDeath(GameObject obstacle) {
-        if (!obstacle.CompareTag("Obstacle")) return;
+        Debug.Log("Collision!");
+        if (!col.gameObject.CompareTag("Obstacle")) return;
         gameState.GameOver();
     }
 }
