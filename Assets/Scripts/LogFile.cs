@@ -1,54 +1,45 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using System;
 using System.IO;
+using UnityEngine;
 
-public class LogFile : MonoBehaviour
-{
+public class LogFile : MonoBehaviour {
     string filename = "";
 
-    [System.Serializable]
-
-    public class Player
-    {
+    [Serializable]
+    public class Player {
         public string name;
         public int LoadHighScore;
     }
-    [System.Serializable]
 
-    public class PlayerList
-    {
+    [Serializable]
+    public class PlayerList {
         public Player[] player;
     }
+
     public PlayerList myPlayerList = new PlayerList();
 
     // Start is called before the first frame update
-    void Start()
-    {
+    private void Start() {
         filename = Application.dataPath + "/test.csv";
     }
 
-    private void Update()
-    {
+    private void Update() {
         if (Input.GetKeyDown(KeyCode.Space))
             WriteCSV();
     }
 
-    public void WriteCSV()
-    {
-        if(myPlayerList.player.Length > 0)
-        {
-            TextWriter tw = new StreamWriter(filename, false);
-            tw.WriteLine("Name, point");
-            tw.Close();
+    private void WriteCSV() {
+        if (myPlayerList.player.Length <= 0) return;
+        TextWriter tw = new StreamWriter(filename, false);
+        tw.WriteLine("Name, point");
+        tw.Close();
 
-            tw = new StreamWriter(filename, true);
+        tw = new StreamWriter(filename, true);
 
-            for(int i = 0; i < myPlayerList.player.Length; i++)
-            {
-                tw.WriteLine(myPlayerList.player[i].name + "," + myPlayerList.player[i].LoadHighScore);
-            }
-            tw.Close();
+        foreach (var player in myPlayerList.player) {
+            tw.WriteLine(player.name + "," + player.LoadHighScore);
         }
+
+        tw.Close();
     }
 }
