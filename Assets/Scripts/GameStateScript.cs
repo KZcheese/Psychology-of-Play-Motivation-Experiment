@@ -16,7 +16,7 @@ public class GameStateScript : MonoBehaviour {
     public void Start() {
         score = 0;
         isAlive = true;
-        highScore = saveManager.LoadHighScore();
+        highScore = SaveManager.LoadHighScore();
     }
 
     [ContextMenu("Add Score")]
@@ -34,7 +34,7 @@ public class GameStateScript : MonoBehaviour {
         saveManager.logAttempt(score);
         if (score > highScore) {
             highScore = score;
-            saveManager.SaveHighScore(highScore);
+            SaveManager.SaveHighScore(highScore);
         }
 
         scoreBoard.text = score.ToString();
