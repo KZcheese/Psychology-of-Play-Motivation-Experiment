@@ -1,4 +1,4 @@
-using System;
+using System.Net;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -30,6 +30,8 @@ public class GameStateScript : MonoBehaviour {
     }
 
     public void GameOver() {
+        if (!isAlive) return;
+        saveManager.logAttempt(score);
         if (score > highScore) {
             highScore = score;
             saveManager.SaveHighScore(highScore);
@@ -37,11 +39,8 @@ public class GameStateScript : MonoBehaviour {
 
         scoreBoard.text = score.ToString();
         highScoreBoard.text = highScore.ToString();
-
         
         gameOverScreen.SetActive(true);
         isAlive = false;
     }
-
-
 }
