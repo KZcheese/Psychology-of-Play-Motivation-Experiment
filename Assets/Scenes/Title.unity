@@ -289,8 +289,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   saveManager: {fileID: 294200094}
-  nameField: {fileID: 707211037}
-  idField: {fileID: 1514292722}
+  nameField: {fileID: 1634684325}
+  idField: {fileID: 1652726656}
 --- !u!4 &294200093
 Transform:
   m_ObjectHideFlags: 0
