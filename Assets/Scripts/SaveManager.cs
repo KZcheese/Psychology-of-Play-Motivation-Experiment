@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 
 public class SaveManager : MonoBehaviour {
@@ -24,14 +25,14 @@ public class SaveManager : MonoBehaviour {
 
     public void intializeLog(string name, string id) {
         textWriter = new StreamWriter(filename, false);
-        textWriter.WriteLine("Points,Name,ID");
-        textWriter.WriteLine($",{name},{id}");
+        textWriter.WriteLine("Points,Time,Name,ID");
+        textWriter.WriteLine($",,{name},{id}");
         textWriter.Close();
     }
     
-    public void logAttempt(int score) {
+    public void logAttempt(string[] properties) {
         textWriter = new StreamWriter(filename, true);
-        textWriter.WriteLine(score);
+        textWriter.WriteLine(string.Join(",", properties.Select(item => "'" + item + "'")));
         textWriter.Close();    
     }
 }

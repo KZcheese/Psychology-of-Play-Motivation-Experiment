@@ -4,8 +4,8 @@ using UnityEngine.SceneManagement;
 
 public class StartManager : MonoBehaviour {
     public SaveManager saveManager;
-    public TextMeshProUGUI nameField;
-    public TextMeshProUGUI idField;
+    public TMP_InputField nameField;
+    public TMP_InputField idField;
 
     public void StartGame() {
         if (nameField.text.Length < 1 || idField.text.Length < 1) return;

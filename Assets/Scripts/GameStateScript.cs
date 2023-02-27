@@ -12,11 +12,13 @@ public class GameStateScript : MonoBehaviour {
     public GameObject gameOverScreen;
     public bool isAlive;
     public SaveManager saveManager;
+    private float startTime;
 
     public void Start() {
         score = 0;
         isAlive = true;
         highScore = SaveManager.LoadHighScore();
+        startTime = Time.time;
     }
 
     [ContextMenu("Add Score")]
@@ -31,7 +33,7 @@ public class GameStateScript : MonoBehaviour {
 
     public void GameOver() {
         if (!isAlive) return;
-        saveManager.logAttempt(score);
+        saveManager.logAttempt(new[] { score.ToString(), (Time.time - startTime).ToString() });
         if (score > highScore) {
             highScore = score;
             SaveManager.SaveHighScore(highScore);
