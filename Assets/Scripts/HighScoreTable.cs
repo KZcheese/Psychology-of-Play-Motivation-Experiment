@@ -25,16 +25,31 @@ public class HighScoreTable : MonoBehaviour
             new HighScoreEntry{score= 287, name = "William Maier", id = 16},
             new HighScoreEntry{score= 247, name = "Ziad", id = 12},
             new HighScoreEntry{score= 130, name = "Kito", id = 15},
-            new HighScoreEntry{score= 100, name = "Will Hu", id = 101},
             new HighScoreEntry{score= 99, name = "Samer", id = 13},
+            new HighScoreEntry{score= 100, name = "Will Hu", id = 101},
             new HighScoreEntry{score= 78, name = "Rami", id = 6},
             new HighScoreEntry{score= 64, name = "Paramveer", id = 4},
             new HighScoreEntry{score= 52, name = "Jake", id = 5}
         };
 
+        //Sort entry list by score
+        for(int i = 0; i < highscoreEntryList.Count; i++)
+        {
+            for (int j = i+ 1; j < highscoreEntryList.Count; j++)
+            {
+                
+                if(highscoreEntryList[j].score > highscoreEntryList[i].score)
+                {
+                    //Swap
+                    HighScoreEntry temp = highscoreEntryList[i];
+                    highscoreEntryList[i] = highscoreEntryList[j];
+                    highscoreEntryList[j] = temp;
+                }
+            }
+        }
+
         highscoreEntryTransformList = new List<Transform>();
 
-        
         foreach (HighScoreEntry highscoreEntry in highscoreEntryList)
         {
             CreateHighScoreEntryTransform(highscoreEntry, entryContainer, highscoreEntryTransformList);
