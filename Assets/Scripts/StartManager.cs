@@ -12,6 +12,7 @@ public class StartManager : MonoBehaviour
     {
         if(nameField.text.Length < 1 || idField.text.Length < 1) return;
         saveManager.intializeLog(nameField.text, idField.text);
+        SaveManager.SavePlayer(nameField.text, int.Parse(idField.text));
         SceneManager.LoadScene("Game");
     }
 }

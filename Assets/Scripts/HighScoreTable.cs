@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,7 +18,7 @@ public class HighScoreTable : MonoBehaviour
 
         entryTemplate.gameObject.SetActive(false);
 
-        highscoreEntryList = new List<HighScoreEntry>()
+        highscoreEntryList = new List<HighScoreEntry>
         {
             new HighScoreEntry {score = 458, name = "Elio", id = 1},
             new HighScoreEntry {score = 303, name = "AK", id = 11},
@@ -32,11 +33,10 @@ public class HighScoreTable : MonoBehaviour
         };
 
         //Sort entry list by score
-        for (int i = 0; i < highscoreEntryList.Count; i++)
+        for (int i = 0; i < highscoreEntryList.Count - 1; i++)
         {
             for (int j = i + 1; j < highscoreEntryList.Count; j++)
             {
-
                 if(highscoreEntryList[j].score > highscoreEntryList[i].score)
                 {
                     //Swap
@@ -49,43 +49,20 @@ public class HighScoreTable : MonoBehaviour
 
         foreach (HighScoreEntry highScoreEntry in highscoreEntryList)
         {
-            CreateHighScoreEntryTransform(highScoreEntry, entryContainer, highscoreEntryTransformList);
+            CreateHighScoreEntryTransform(highScoreEntry, entryContainer);
         }
     }
 
-    private void CreateHighScoreEntryTransform(HighScoreEntry highScoreEntry, Transform container, ICollection<Transform> transformList)
+    private void CreateHighScoreEntryTransform(HighScoreEntry highScoreEntry, Transform container)
     {
         const float templateHeight = 40f;
 
         Transform entryTransform = Instantiate(entryTemplate, container);
         RectTransform entryRectTransform = entryTransform.GetComponent<RectTransform>();
-        entryRectTransform.anchoredPosition = new Vector2(0, -templateHeight * transformList.Count);
+        entryRectTransform.anchoredPosition = new Vector2(0, -templateHeight * highscoreEntryTransformList.Count);
         entryTransform.gameObject.SetActive(true);
 
-
-        int rank = transformList.Count + 1;
-        string rankString;
-        Debug.Log("entering rank system");
-        switch (rank)
-        {
-            default:
-                rankString = rank + "TH";
-                Debug.Log("entering switch system");
-                break;
-
-            case 1:
-                rankString = "1ST";
-                Debug.Log("entering switch system");
-                break;
-
-            case 2:
-                rankString = "2ND";
-                break;
-
-            case 3:
-                rankString = "3RD";
-                break;
-        }
+        string rankString = GenerateRankString(highscoreEntryTransformList.Count + 1);
 
         //Debug.Log(entryTransform.Find("posText"));
         //Debug.Log(entryTransform.GetChild(0));
@@ -113,8 +90,83 @@ public class HighScoreTable : MonoBehaviour
         nameText.GetComponent<Text>().text = name;
         idText.GetComponent<Text>().text = id.ToString();
 
-        transformList.Add(entryTransform);
+        highscoreEntryTransformList.Add(entryTransform);
     }
+
+    public void AddHighScore(int score, string name, int id)
+    {
+        foreach (Transform entryTransform in from entryTransform in highscoreEntryTransformList
+                 let transformID = int.Parse(entryTransform.GetChild(3).GetComponent<Text>().text)
+                 where id.Equals(transformID)
+                 select entryTransform)
+        {
+            // update score
+            entryTransform.GetChild(1).GetComponent<Text>().text = score.ToString();
+
+            // update name (just in case it changed)
+            entryTransform.GetChild(2).GetComponent<Text>().text = name;
+        }
+
+        // fix rankings to reflect changed score
+        SortScoreBoard();
+        RegenerateRankings();
+    }
+
+    private void SortScoreBoard()
+    {
+        //Sort entry list by score
+        for (int i = 0; i < highscoreEntryTransformList.Count - 1; i++)
+        {
+            for (int j = i + 1; j < highscoreEntryTransformList.Count; j++)
+            {
+                int iScore = int.Parse(highscoreEntryTransformList[i].GetChild(1).GetComponent<Text>().text);
+                int jScore = int.Parse(highscoreEntryTransformList[j].GetChild(1).GetComponent<Text>().text);
+
+                if(jScore > iScore)
+                {
+                    //Swap
+                    (highscoreEntryList[i], highscoreEntryList[j]) = (highscoreEntryList[j], highscoreEntryList[i]);
+                }
+            }
+        }
+    }
+
+    private void RegenerateRankings()
+    {
+        for (int i = 0; i < highscoreEntryTransformList.Count; i++)
+        {
+            highscoreEntryTransformList[i].GetChild(0).GetComponent<Text>().text = GenerateRankString(i + 1);
+        }
+    }
+
+    private static string GenerateRankString(int rank)
+    {
+        string rankString;
+        Debug.Log("entering rank system");
+        switch (rank)
+        {
+            default:
+                rankString = rank + "TH";
+                Debug.Log("entering switch system");
+                break;
+
+            case 1:
+                rankString = "1ST";
+                Debug.Log("entering switch system");
+                break;
+
+            case 2:
+                rankString = "2ND";
+                break;
+
+            case 3:
+                rankString = "3RD";
+                break;
+        }
+
+        return rankString;
+    }
+
 
     /*
      * Represents a single High Score Entry

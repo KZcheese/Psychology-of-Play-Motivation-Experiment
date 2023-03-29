@@ -4,7 +4,7 @@ public class PipeSpawnScript : MonoBehaviour
 {
     public GameObject pipe;
     public float spawnRate = 2;
-    private float _timer = 0;
+    private float _timer;
     public float heightOffset = 10;
 
     // Update is called once per frame

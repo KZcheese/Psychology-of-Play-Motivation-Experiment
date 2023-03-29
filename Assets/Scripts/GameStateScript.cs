@@ -1,24 +1,29 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
 public class GameStateScript : MonoBehaviour
 {
     public int score;
     public int highScore;
+    public string playerName;
+    public int id;
+    public TextMeshProUGUI scoreHud;
     public TextMeshProUGUI scoreDisplay;
-    public TextMeshProUGUI scoreBoard;
-    public TextMeshProUGUI highScoreBoard;
+    public TextMeshProUGUI highScoreDisplay;
     public GameObject gameOverScreen;
+    public GameObject highScoreScreen;
     public bool isAlive;
     public SaveManager saveManager;
+    public HighScoreTable highScoreTable;
     private float startTime;
 
     public void Start()
     {
         score = 0;
         isAlive = true;
-        highScore = SaveManager.LoadHighScore();
+        (highScore, playerName, id) = SaveManager.LoadSession();
         startTime = Time.time;
     }
 
@@ -26,7 +31,7 @@ public class GameStateScript : MonoBehaviour
     public void AddScore(int points)
     {
         score += points;
-        scoreDisplay.text = score.ToString();
+        scoreHud.text = score.ToString();
     }
 
     public void RestartGame()
@@ -42,10 +47,11 @@ public class GameStateScript : MonoBehaviour
         {
             highScore = score;
             SaveManager.SaveHighScore(highScore);
+            highScoreTable.AddHighScore(score, playerName, id);
         }
 
-        scoreBoard.text = score.ToString();
-        highScoreBoard.text = highScore.ToString();
+        scoreDisplay.text = score.ToString();
+        highScoreDisplay.text = highScore.ToString();
 
         gameOverScreen.SetActive(true);
         isAlive = false;
