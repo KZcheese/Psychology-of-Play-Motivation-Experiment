@@ -1,7 +1,6 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
 
 public class GameStateScript : MonoBehaviour
 {
@@ -23,7 +22,8 @@ public class GameStateScript : MonoBehaviour
     {
         score = 0;
         isAlive = true;
-        (highScore, playerName, id) = SaveManager.LoadSession();
+        (playerName, id) = SaveManager.LoadPlayer();
+        highScore = highScoreTable.GetHighScore(id);
         startTime = Time.time;
     }
 
@@ -46,7 +46,6 @@ public class GameStateScript : MonoBehaviour
         if(score > highScore)
         {
             highScore = score;
-            SaveManager.SaveHighScore(highScore);
             highScoreTable.AddHighScore(score, playerName, id);
         }
 

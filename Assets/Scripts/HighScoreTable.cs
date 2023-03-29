@@ -11,6 +11,11 @@ public class HighScoreTable : MonoBehaviour
     private List<HighScoreEntry> highscoreEntryList;
     private List<Transform> highscoreEntryTransformList;
 
+    private const int RANK = 0;
+    private const int SCORE = 1;
+    private const int NAME = 2;
+    private const int ID = 3;
+
     private void Awake()
     {
         entryContainer = transform.Find("highScoreEntryContainer");
@@ -68,10 +73,10 @@ public class HighScoreTable : MonoBehaviour
         //Debug.Log(entryTransform.GetChild(0));
 
         //This GetChild() seems to work compared to find, so I will be creating transforms for each of the text boxes
-        Transform posText = entryTransform.GetChild(0);
-        Transform scoreText = entryTransform.GetChild(1);
-        Transform nameText = entryTransform.GetChild(2);
-        Transform idText = entryTransform.GetChild(3);
+        Transform posText = entryTransform.GetChild(RANK);
+        Transform scoreText = entryTransform.GetChild(SCORE);
+        Transform nameText = entryTransform.GetChild(NAME);
+        Transform idText = entryTransform.GetChild(ID);
 
         posText.GetComponent<Text>().text = rankString;
 
@@ -95,21 +100,37 @@ public class HighScoreTable : MonoBehaviour
 
     public void AddHighScore(int score, string name, int id)
     {
+        bool existing = false;
         foreach (Transform entryTransform in from entryTransform in highscoreEntryTransformList
-                 let transformID = int.Parse(entryTransform.GetChild(3).GetComponent<Text>().text)
+                 let transformID = int.Parse(entryTransform.GetChild(ID).GetComponent<Text>().text)
                  where id.Equals(transformID)
                  select entryTransform)
         {
             // update score
-            entryTransform.GetChild(1).GetComponent<Text>().text = score.ToString();
+            entryTransform.GetChild(SCORE).GetComponent<Text>().text = score.ToString();
 
             // update name (just in case it changed)
-            entryTransform.GetChild(2).GetComponent<Text>().text = name;
+            entryTransform.GetChild(NAME).GetComponent<Text>().text = name;
+            existing = true;
+        }
+
+        if(!existing)
+        {
+            HighScoreEntry newHighScore = new HighScoreEntry {score = score, name = name, id = id};
+            CreateHighScoreEntryTransform(newHighScore, entryContainer);
         }
 
         // fix rankings to reflect changed score
         SortScoreBoard();
-        RegenerateRankings();
+        // No longer used now that sorting swaps rankings
+        // RegenerateRankings();
+    }
+
+    public int GetHighScore(int id)
+    {
+        return (from entryTransform in highscoreEntryTransformList
+            where int.Parse(entryTransform.GetChild(ID).GetComponent<Text>().text).Equals(id)
+            select int.Parse(entryTransform.GetChild(SCORE).GetComponent<Text>().text)).FirstOrDefault();
     }
 
     private void SortScoreBoard()
@@ -119,14 +140,17 @@ public class HighScoreTable : MonoBehaviour
         {
             for (int j = i + 1; j < highscoreEntryTransformList.Count; j++)
             {
-                int iScore = int.Parse(highscoreEntryTransformList[i].GetChild(1).GetComponent<Text>().text);
-                int jScore = int.Parse(highscoreEntryTransformList[j].GetChild(1).GetComponent<Text>().text);
+                int iScore = int.Parse(highscoreEntryTransformList[i].GetChild(SCORE).GetComponent<Text>().text);
+                int jScore = int.Parse(highscoreEntryTransformList[j].GetChild(SCORE).GetComponent<Text>().text);
 
-                if(jScore > iScore)
-                {
-                    //Swap
-                    (highscoreEntryList[i], highscoreEntryList[j]) = (highscoreEntryList[j], highscoreEntryList[i]);
-                }
+                if(jScore <= iScore) continue;
+                //Swap
+                (highscoreEntryList[i], highscoreEntryList[j]) = (highscoreEntryList[j], highscoreEntryList[i]);
+
+                //Swap Ranking
+                Text iRank = highscoreEntryTransformList[i].GetChild(RANK).GetComponent<Text>();
+                Text jRank = highscoreEntryTransformList[j].GetChild(RANK).GetComponent<Text>();
+                (iRank, jRank) = (jRank, iRank);
             }
         }
     }
@@ -135,7 +159,7 @@ public class HighScoreTable : MonoBehaviour
     {
         for (int i = 0; i < highscoreEntryTransformList.Count; i++)
         {
-            highscoreEntryTransformList[i].GetChild(0).GetComponent<Text>().text = GenerateRankString(i + 1);
+            highscoreEntryTransformList[i].GetChild(RANK).GetComponent<Text>().text = GenerateRankString(i + 1);
         }
     }
 

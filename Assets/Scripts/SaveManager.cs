@@ -33,10 +33,9 @@ public class SaveManager : MonoBehaviour
         textWriter.Close();
     }
 
-    public static (int, string, int) LoadSession()
+    public static (string, int) LoadPlayer()
     {
         return (
-            PlayerPrefs.GetInt(HighScoreKey, 0),
             PlayerPrefs.GetString(NameKey, ""),
             PlayerPrefs.GetInt(IDKey, 0)
         );
