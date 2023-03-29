@@ -1,9 +1,9 @@
-using System.Net;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class GameStateScript : MonoBehaviour {
+public class GameStateScript : MonoBehaviour
+{
     public int score;
     public int highScore;
     public TextMeshProUGUI scoreDisplay;
@@ -14,7 +14,8 @@ public class GameStateScript : MonoBehaviour {
     public SaveManager saveManager;
     private float startTime;
 
-    public void Start() {
+    public void Start()
+    {
         score = 0;
         isAlive = true;
         highScore = SaveManager.LoadHighScore();
@@ -22,26 +23,30 @@ public class GameStateScript : MonoBehaviour {
     }
 
     [ContextMenu("Add Score")]
-    public void AddScore(int points) {
+    public void AddScore(int points)
+    {
         score += points;
         scoreDisplay.text = score.ToString();
     }
 
-    public void RestartGame() {
+    public void RestartGame()
+    {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
-    public void GameOver() {
-        if (!isAlive) return;
-        saveManager.logAttempt(new[] { score.ToString(), (Time.time - startTime).ToString() });
-        if (score > highScore) {
+    public void GameOver()
+    {
+        if(!isAlive) return;
+        saveManager.logAttempt(new[] {score.ToString(), (Time.time - startTime).ToString()});
+        if(score > highScore)
+        {
             highScore = score;
             SaveManager.SaveHighScore(highScore);
         }
 
         scoreBoard.text = score.ToString();
         highScoreBoard.text = highScore.ToString();
-        
+
         gameOverScreen.SetActive(true);
         isAlive = false;
     }

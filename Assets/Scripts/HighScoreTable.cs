@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,45 +19,43 @@ public class HighScoreTable : MonoBehaviour
 
         highscoreEntryList = new List<HighScoreEntry>()
         {
-            new HighScoreEntry{score= 458, name = "Elio", id = 1},
-            new HighScoreEntry{score= 303, name = "AK", id = 11},
-            new HighScoreEntry{score= 287, name = "William Maier", id = 16},
-            new HighScoreEntry{score= 247, name = "Ziad", id = 12},
-            new HighScoreEntry{score= 130, name = "Kito", id = 15},
-            new HighScoreEntry{score= 99, name = "Samer", id = 13},
-            new HighScoreEntry{score= 100, name = "Will Hu", id = 101},
-            new HighScoreEntry{score= 78, name = "Rami", id = 6},
-            new HighScoreEntry{score= 64, name = "Paramveer", id = 4},
-            new HighScoreEntry{score= 52, name = "Jake", id = 5}
+            new HighScoreEntry {score = 458, name = "Elio", id = 1},
+            new HighScoreEntry {score = 303, name = "AK", id = 11},
+            new HighScoreEntry {score = 287, name = "William Maier", id = 16},
+            new HighScoreEntry {score = 247, name = "Ziad", id = 12},
+            new HighScoreEntry {score = 130, name = "Kito", id = 15},
+            new HighScoreEntry {score = 99, name = "Samer", id = 13},
+            new HighScoreEntry {score = 100, name = "Will Hu", id = 101},
+            new HighScoreEntry {score = 78, name = "Rami", id = 6},
+            new HighScoreEntry {score = 64, name = "Paramveer", id = 4},
+            new HighScoreEntry {score = 52, name = "Jake", id = 5}
         };
 
         //Sort entry list by score
-        for(int i = 0; i < highscoreEntryList.Count; i++)
+        for (int i = 0; i < highscoreEntryList.Count; i++)
         {
-            for (int j = i+ 1; j < highscoreEntryList.Count; j++)
+            for (int j = i + 1; j < highscoreEntryList.Count; j++)
             {
-                
+
                 if(highscoreEntryList[j].score > highscoreEntryList[i].score)
                 {
                     //Swap
-                    HighScoreEntry temp = highscoreEntryList[i];
-                    highscoreEntryList[i] = highscoreEntryList[j];
-                    highscoreEntryList[j] = temp;
+                    (highscoreEntryList[i], highscoreEntryList[j]) = (highscoreEntryList[j], highscoreEntryList[i]);
                 }
             }
         }
 
         highscoreEntryTransformList = new List<Transform>();
 
-        foreach (HighScoreEntry highscoreEntry in highscoreEntryList)
+        foreach (HighScoreEntry highScoreEntry in highscoreEntryList)
         {
-            CreateHighScoreEntryTransform(highscoreEntry, entryContainer, highscoreEntryTransformList);
+            CreateHighScoreEntryTransform(highScoreEntry, entryContainer, highscoreEntryTransformList);
         }
     }
 
-    private void CreateHighScoreEntryTransform(HighScoreEntry highscoreEntry, Transform container, List<Transform> transformList)
+    private void CreateHighScoreEntryTransform(HighScoreEntry highScoreEntry, Transform container, ICollection<Transform> transformList)
     {
-        float templateHeight = 40f;
+        const float templateHeight = 40f;
 
         Transform entryTransform = Instantiate(entryTemplate, container);
         RectTransform entryRectTransform = entryTransform.GetComponent<RectTransform>();
@@ -72,17 +69,28 @@ public class HighScoreTable : MonoBehaviour
         switch (rank)
         {
             default:
-                rankString = rank + "TH"; Debug.Log("entering switch system"); break;
+                rankString = rank + "TH";
+                Debug.Log("entering switch system");
+                break;
 
-            case 1: rankString = "1ST"; Debug.Log("entering switch system"); break;
-            case 2: rankString = "2ND"; break;
-            case 3: rankString = "3RD"; break;
+            case 1:
+                rankString = "1ST";
+                Debug.Log("entering switch system");
+                break;
+
+            case 2:
+                rankString = "2ND";
+                break;
+
+            case 3:
+                rankString = "3RD";
+                break;
         }
 
         //Debug.Log(entryTransform.Find("posText"));
         //Debug.Log(entryTransform.GetChild(0));
 
-        //This GetChild() seems to work compared to find, so I will be creating transofrms for each of the text boxes
+        //This GetChild() seems to work compared to find, so I will be creating transforms for each of the text boxes
         Transform posText = entryTransform.GetChild(0);
         Transform scoreText = entryTransform.GetChild(1);
         Transform nameText = entryTransform.GetChild(2);
@@ -95,13 +103,13 @@ public class HighScoreTable : MonoBehaviour
         //Debug.Log(entryTransform.Find("scoreText").GetComponent<Text>().text);
 
         //for testing we using a random number
-        int score = highscoreEntry.score;
+        int score = highScoreEntry.score;
 
         scoreText.GetComponent<Text>().text = score.ToString();
 
         //for testing
-        string name = highscoreEntry.name;
-        int id = highscoreEntry.id;
+        string name = highScoreEntry.name;
+        int id = highScoreEntry.id;
         nameText.GetComponent<Text>().text = name;
         idText.GetComponent<Text>().text = id.ToString();
 
