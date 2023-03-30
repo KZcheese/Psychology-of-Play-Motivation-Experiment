@@ -18,7 +18,11 @@ public class HighScoreTable : MonoBehaviour
 
     private void Awake()
     {
-        entryContainer = transform.Find("highScoreEntryContainer");
+        //entryContainer = transform.Find("highScoreEntryContainer");
+        //entryContainer = transform.Find("body");
+        //Potential fix for this: Due to creation of "body" emty object, it could not find it's direct child anymore, so we have to find the child within the ody which is now the new child. So we would have to find the container once we have found body.
+        entryContainer = transform.Find("body").Find("highScoreEntryContainer");
+        Debug.Log("entrycontainer " + transform.Find("body").Find("highScoreEntryContainer"));
         entryTemplate = entryContainer.Find("highScoreEntryTemplate");
 
         entryTemplate.gameObject.SetActive(false);
