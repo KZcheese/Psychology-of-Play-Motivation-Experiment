@@ -38,7 +38,7 @@ public class HighScoreTable : MonoBehaviour
             new HighScoreEntry {score = 100, name = "Will Hu", id = 101},
             new HighScoreEntry {score = 78, name = "Rami", id = 6},
             new HighScoreEntry {score = 64, name = "Paramveer", id = 4},
-            new HighScoreEntry {score = 52, name = "Jake", id = 5}
+            new HighScoreEntry {score = 182, name = "jhoon", id = 10}
         };
 
         //Sort entry list by score
