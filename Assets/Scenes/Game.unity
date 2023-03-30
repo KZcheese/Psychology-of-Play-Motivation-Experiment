@@ -463,6 +463,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6209694076468429696, guid: fb64f0d634260184fbc1a17734a4a539, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7720630238098951069, guid: fb64f0d634260184fbc1a17734a4a539, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -471,8 +475,14 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: RestartGame
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6209694076392206991, guid: fb64f0d634260184fbc1a17734a4a539, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: fb64f0d634260184fbc1a17734a4a539, type: 3}
+--- !u!224 &799818413 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 6209694076468429703, guid: fb64f0d634260184fbc1a17734a4a539, type: 3}
+  m_PrefabInstance: {fileID: 795548407}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1080452095
 GameObject:
   m_ObjectHideFlags: 0
@@ -592,17 +602,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6209694076392206985, guid: fb64f0d634260184fbc1a17734a4a539, type: 3}
   m_PrefabInstance: {fileID: 795548407}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1426489702 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6209694076392206991, guid: fb64f0d634260184fbc1a17734a4a539, type: 3}
-  m_PrefabInstance: {fileID: 795548407}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1426489701}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 18151467760df5841bf6b9acab4eed5f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &1426489703 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6209694076392206984, guid: fb64f0d634260184fbc1a17734a4a539, type: 3}
@@ -666,6 +665,7 @@ GameObject:
   - component: {fileID: 1702671120}
   - component: {fileID: 1702671119}
   - component: {fileID: 1702671121}
+  - component: {fileID: 1702671122}
   m_Layer: 0
   m_Name: Logic Manager
   m_TagString: Untagged
@@ -696,7 +696,7 @@ MonoBehaviour:
   highScoreScreen: {fileID: 1426489701}
   isAlive: 1
   saveManager: {fileID: 1702671121}
-  highScoreTable: {fileID: 1426489702}
+  highScoreTableManager: {fileID: 0}
 --- !u!4 &1702671120
 Transform:
   m_ObjectHideFlags: 0
@@ -725,6 +725,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   filename: log.csv
+--- !u!114 &1702671122
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1702671118}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18151467760df5841bf6b9acab4eed5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _entryContainer: {fileID: 1720061162}
+  _entryTemplate: {fileID: 799818413}
 --- !u!1 &1713428204
 GameObject:
   m_ObjectHideFlags: 0
@@ -860,6 +874,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1713428204}
   m_CullTransparentMesh: 1
+--- !u!224 &1720061162 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 6209694076627989765, guid: fb64f0d634260184fbc1a17734a4a539, type: 3}
+  m_PrefabInstance: {fileID: 795548407}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1787462636
 GameObject:
   m_ObjectHideFlags: 0
