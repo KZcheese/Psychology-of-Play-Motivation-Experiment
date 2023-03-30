@@ -34,6 +34,12 @@ public class GameStateScript : MonoBehaviour
         scoreHud.text = score.ToString();
     }
 
+    public void ShowHighScores()
+    {
+        gameOverScreen.SetActive(false);
+        highScoreScreen.SetActive(true);
+    }
+
     public void RestartGame()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);

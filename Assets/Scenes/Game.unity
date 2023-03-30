@@ -364,7 +364,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1001 &780450758
+--- !u!1001 &795548407
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -441,7 +441,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6209694076392206984, guid: fb64f0d634260184fbc1a17734a4a539, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 6209694076392206984, guid: fb64f0d634260184fbc1a17734a4a539, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -463,29 +463,16 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7720630238098951069, guid: fb64f0d634260184fbc1a17734a4a539, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1702671119}
+    - target: {fileID: 7720630238098951069, guid: fb64f0d634260184fbc1a17734a4a539, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: RestartGame
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fb64f0d634260184fbc1a17734a4a539, type: 3}
---- !u!224 &780450759 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 6209694076392206984, guid: fb64f0d634260184fbc1a17734a4a539, type: 3}
-  m_PrefabInstance: {fileID: 780450758}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &780450760 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6209694076392206991, guid: fb64f0d634260184fbc1a17734a4a539, type: 3}
-  m_PrefabInstance: {fileID: 780450758}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 780450761}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 18151467760df5841bf6b9acab4eed5f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!1 &780450761 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6209694076392206985, guid: fb64f0d634260184fbc1a17734a4a539, type: 3}
-  m_PrefabInstance: {fileID: 780450758}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1080452095
 GameObject:
   m_ObjectHideFlags: 0
@@ -580,7 +567,7 @@ RectTransform:
   m_Children:
   - {fileID: 1713428205}
   - {fileID: 182962307}
-  - {fileID: 780450759}
+  - {fileID: 1426489703}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -600,6 +587,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1426489701 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6209694076392206985, guid: fb64f0d634260184fbc1a17734a4a539, type: 3}
+  m_PrefabInstance: {fileID: 795548407}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1426489702 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6209694076392206991, guid: fb64f0d634260184fbc1a17734a4a539, type: 3}
+  m_PrefabInstance: {fileID: 795548407}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1426489701}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18151467760df5841bf6b9acab4eed5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!224 &1426489703 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 6209694076392206984, guid: fb64f0d634260184fbc1a17734a4a539, type: 3}
+  m_PrefabInstance: {fileID: 795548407}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1447567946
 GameObject:
   m_ObjectHideFlags: 0
@@ -685,10 +693,10 @@ MonoBehaviour:
   scoreDisplay: {fileID: 549344626}
   highScoreDisplay: {fileID: 1361352187}
   gameOverScreen: {fileID: 182962306}
-  highScoreScreen: {fileID: 780450761}
+  highScoreScreen: {fileID: 1426489701}
   isAlive: 1
   saveManager: {fileID: 1702671121}
-  highScoreTable: {fileID: 780450760}
+  highScoreTable: {fileID: 1426489702}
 --- !u!4 &1702671120
 Transform:
   m_ObjectHideFlags: 0
@@ -1015,6 +1023,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1702671119}
+    - target: {fileID: 8808154946857928865, guid: 74bf55fcd9983ff40be777e422e12a30, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ShowHighScores
+      objectReference: {fileID: 0}
     - target: {fileID: 8808154946969926142, guid: 74bf55fcd9983ff40be777e422e12a30, type: 3}
       propertyPath: m_Name
       value: Game Over Screen
@@ -1111,5 +1123,9 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1702671119}
+    - target: {fileID: 8808154947914807855, guid: 74bf55fcd9983ff40be777e422e12a30, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 74bf55fcd9983ff40be777e422e12a30, type: 3}
