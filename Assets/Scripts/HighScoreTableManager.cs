@@ -3,31 +3,33 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HighScoreTable : MonoBehaviour
+[RequireComponent(typeof(Transform))]
+public class HighScoreTableManager : MonoBehaviour
 {
-    private Transform entryContainer;
-    private Transform entryTemplate;
+    public Transform _entryContainer;
+    public Transform _entryTemplate;
 
-    private List<HighScoreEntry> highscoreEntryList;
-    private List<Transform> highscoreEntryTransformList;
+    private List<HighScoreEntry> _highScoreEntryList;
+    private List<Transform> _highScoreEntryTransformList;
 
-    private const int RANK = 0;
-    private const int SCORE = 1;
-    private const int NAME = 2;
+    private const int Rank = 0;
+    private const int Score = 1;
+    private const int Name = 2;
     private const int ID = 3;
 
     private void Awake()
     {
+        // Debug.Log("awake!");
         //entryContainer = transform.Find("highScoreEntryContainer");
         //entryContainer = transform.Find("body");
-        //Potential fix for this: Due to creation of "body" emty object, it could not find it's direct child anymore, so we have to find the child within the ody which is now the new child. So we would have to find the container once we have found body.
-        entryContainer = transform.Find("body").Find("highScoreEntryContainer");
-        Debug.Log("entrycontainer " + transform.Find("body").Find("highScoreEntryContainer"));
-        entryTemplate = entryContainer.Find("highScoreEntryTemplate");
+        //Potential fix for this: Due to creation of "body" empty object, it could not find it's direct child anymore, so we have to find the child within the ody which is now the new child. So we would have to find the container once we have found body.
+        // _entryContainer = transform.Find("body").Find("highScoreEntryContainer");
+        // Debug.Log("entrycontainer " + transform.Find("body").Find("highScoreEntryContainer"));
+        // _entryTemplate = _entryContainer.Find("highScoreEntryTemplate");
 
-        entryTemplate.gameObject.SetActive(false);
+        _entryTemplate.gameObject.SetActive(false);
 
-        highscoreEntryList = new List<HighScoreEntry>
+        _highScoreEntryList = new List<HighScoreEntry>
         {
             new HighScoreEntry {score = 458, name = "Elio", id = 1},
             new HighScoreEntry {score = 303, name = "AK", id = 11},
@@ -42,44 +44,46 @@ public class HighScoreTable : MonoBehaviour
         };
 
         //Sort entry list by score
-        for (int i = 0; i < highscoreEntryList.Count - 1; i++)
+        for (int i = 0; i < _highScoreEntryList.Count - 1; i++)
         {
-            for (int j = i + 1; j < highscoreEntryList.Count; j++)
+            for (int j = i + 1; j < _highScoreEntryList.Count; j++)
             {
-                if(highscoreEntryList[j].score > highscoreEntryList[i].score)
+                if(_highScoreEntryList[j].score > _highScoreEntryList[i].score)
                 {
                     //Swap
-                    (highscoreEntryList[i], highscoreEntryList[j]) = (highscoreEntryList[j], highscoreEntryList[i]);
+                    (_highScoreEntryList[i], _highScoreEntryList[j]) = (_highScoreEntryList[j], _highScoreEntryList[i]);
                 }
             }
         }
 
-        highscoreEntryTransformList = new List<Transform>();
+        _highScoreEntryTransformList = new List<Transform>();
 
-        foreach (HighScoreEntry highScoreEntry in highscoreEntryList)
+        foreach (HighScoreEntry highScoreEntry in _highScoreEntryList)
         {
-            CreateHighScoreEntryTransform(highScoreEntry, entryContainer);
+            CreateHighScoreEntryTransform(highScoreEntry, _entryContainer);
         }
+        Debug.Log(_highScoreEntryList);
+        Debug.Log(_highScoreEntryTransformList);
     }
 
     private void CreateHighScoreEntryTransform(HighScoreEntry highScoreEntry, Transform container)
     {
         const float templateHeight = 40f;
 
-        Transform entryTransform = Instantiate(entryTemplate, container);
+        Transform entryTransform = Instantiate(_entryTemplate, container);
         RectTransform entryRectTransform = entryTransform.GetComponent<RectTransform>();
-        entryRectTransform.anchoredPosition = new Vector2(0, -templateHeight * highscoreEntryTransformList.Count);
+        entryRectTransform.anchoredPosition = new Vector2(0, -templateHeight * _highScoreEntryTransformList.Count);
         entryTransform.gameObject.SetActive(true);
 
-        string rankString = GenerateRankString(highscoreEntryTransformList.Count + 1);
+        string rankString = GenerateRankString(_highScoreEntryTransformList.Count + 1);
 
         //Debug.Log(entryTransform.Find("posText"));
         //Debug.Log(entryTransform.GetChild(0));
 
         //This GetChild() seems to work compared to find, so I will be creating transforms for each of the text boxes
-        Transform posText = entryTransform.GetChild(RANK);
-        Transform scoreText = entryTransform.GetChild(SCORE);
-        Transform nameText = entryTransform.GetChild(NAME);
+        Transform posText = entryTransform.GetChild(Rank);
+        Transform scoreText = entryTransform.GetChild(Score);
+        Transform nameText = entryTransform.GetChild(Name);
         Transform idText = entryTransform.GetChild(ID);
 
         posText.GetComponent<Text>().text = rankString;
@@ -99,29 +103,29 @@ public class HighScoreTable : MonoBehaviour
         nameText.GetComponent<Text>().text = name;
         idText.GetComponent<Text>().text = id.ToString();
 
-        highscoreEntryTransformList.Add(entryTransform);
+        _highScoreEntryTransformList.Add(entryTransform);
     }
 
     public void AddHighScore(int score, string name, int id)
     {
         bool existing = false;
-        foreach (Transform entryTransform in from entryTransform in highscoreEntryTransformList
+        foreach (Transform entryTransform in from entryTransform in _highScoreEntryTransformList
                  let transformID = int.Parse(entryTransform.GetChild(ID).GetComponent<Text>().text)
                  where id.Equals(transformID)
                  select entryTransform)
         {
             // update score
-            entryTransform.GetChild(SCORE).GetComponent<Text>().text = score.ToString();
+            entryTransform.GetChild(Score).GetComponent<Text>().text = score.ToString();
 
             // update name (just in case it changed)
-            entryTransform.GetChild(NAME).GetComponent<Text>().text = name;
+            entryTransform.GetChild(Name).GetComponent<Text>().text = name;
             existing = true;
         }
 
         if(!existing)
         {
             HighScoreEntry newHighScore = new HighScoreEntry {score = score, name = name, id = id};
-            CreateHighScoreEntryTransform(newHighScore, entryContainer);
+            CreateHighScoreEntryTransform(newHighScore, _entryContainer);
         }
 
         // fix rankings to reflect changed score
@@ -132,28 +136,37 @@ public class HighScoreTable : MonoBehaviour
 
     public int GetHighScore(int id)
     {
-        return (from entryTransform in highscoreEntryTransformList
-            where int.Parse(entryTransform.GetChild(ID).GetComponent<Text>().text).Equals(id)
-            select int.Parse(entryTransform.GetChild(SCORE).GetComponent<Text>().text)).FirstOrDefault();
+        foreach (Transform entryTransform in _highScoreEntryTransformList)
+        {
+            if(int.Parse(entryTransform.GetChild(ID).GetComponent<Text>().text).Equals(id))
+            {
+                return int.Parse(entryTransform.GetChild(Score).GetComponent<Text>().text);
+            }
+        }
+
+        return 0;
+        // return (from entryTransform in _highscoreEntryTransformList
+        //     where int.Parse(entryTransform.GetChild(ID).GetComponent<Text>().text).Equals(id)
+        //     select int.Parse(entryTransform.GetChild(Score).GetComponent<Text>().text)).FirstOrDefault();
     }
 
-    private void SortScoreBoard()
+    private void SortScoreBoard() 
     {
         //Sort entry list by score
-        for (int i = 0; i < highscoreEntryTransformList.Count - 1; i++)
+        for (int i = 0; i < _highScoreEntryTransformList.Count - 1; i++)
         {
-            for (int j = i + 1; j < highscoreEntryTransformList.Count; j++)
+            for (int j = i + 1; j < _highScoreEntryTransformList.Count; j++)
             {
-                int iScore = int.Parse(highscoreEntryTransformList[i].GetChild(SCORE).GetComponent<Text>().text);
-                int jScore = int.Parse(highscoreEntryTransformList[j].GetChild(SCORE).GetComponent<Text>().text);
+                int iScore = int.Parse(_highScoreEntryTransformList[i].GetChild(Score).GetComponent<Text>().text);
+                int jScore = int.Parse(_highScoreEntryTransformList[j].GetChild(Score).GetComponent<Text>().text);
 
                 if(jScore <= iScore) continue;
                 //Swap
-                (highscoreEntryList[i], highscoreEntryList[j]) = (highscoreEntryList[j], highscoreEntryList[i]);
+                (_highScoreEntryList[i], _highScoreEntryList[j]) = (_highScoreEntryList[j], _highScoreEntryList[i]);
 
                 //Swap Ranking
-                Text iRank = highscoreEntryTransformList[i].GetChild(RANK).GetComponent<Text>();
-                Text jRank = highscoreEntryTransformList[j].GetChild(RANK).GetComponent<Text>();
+                Text iRank = _highScoreEntryTransformList[i].GetChild(Rank).GetComponent<Text>();
+                Text jRank = _highScoreEntryTransformList[j].GetChild(Rank).GetComponent<Text>();
                 (iRank, jRank) = (jRank, iRank);
             }
         }
@@ -161,9 +174,9 @@ public class HighScoreTable : MonoBehaviour
 
     private void RegenerateRankings()
     {
-        for (int i = 0; i < highscoreEntryTransformList.Count; i++)
+        for (int i = 0; i < _highScoreEntryTransformList.Count; i++)
         {
-            highscoreEntryTransformList[i].GetChild(RANK).GetComponent<Text>().text = GenerateRankString(i + 1);
+            _highScoreEntryTransformList[i].GetChild(Rank).GetComponent<Text>().text = GenerateRankString(i + 1);
         }
     }
 

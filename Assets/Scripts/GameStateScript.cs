@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
 public class GameStateScript : MonoBehaviour
 {
@@ -15,7 +16,7 @@ public class GameStateScript : MonoBehaviour
     public GameObject highScoreScreen;
     public bool isAlive;
     public SaveManager saveManager;
-    public HighScoreTable highScoreTable;
+    public HighScoreTableManager highScoreTableManager;
     private float startTime;
 
     public void Start()
@@ -23,8 +24,11 @@ public class GameStateScript : MonoBehaviour
         score = 0;
         isAlive = true;
         (playerName, id) = SaveManager.LoadPlayer();
-        highScore = highScoreTable.GetHighScore(id);
+        Debug.Log(playerName);
+        Debug.Log(id);
+        highScore = highScoreTableManager.GetHighScore(id);
         startTime = Time.time;
+        Debug.Log(highScore);
     }
 
     [ContextMenu("Add Score")]
@@ -52,7 +56,7 @@ public class GameStateScript : MonoBehaviour
         if(score > highScore)
         {
             highScore = score;
-            highScoreTable.AddHighScore(score, playerName, id);
+            highScoreTableManager.AddHighScore(score, playerName, id);
         }
 
         scoreDisplay.text = score.ToString();
