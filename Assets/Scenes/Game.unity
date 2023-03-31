@@ -461,7 +461,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6209694076392206985, guid: fb64f0d634260184fbc1a17734a4a539, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6209694076468429696, guid: fb64f0d634260184fbc1a17734a4a539, type: 3}
       propertyPath: m_IsActive
@@ -696,7 +696,7 @@ MonoBehaviour:
   highScoreScreen: {fileID: 1426489701}
   isAlive: 1
   saveManager: {fileID: 1702671121}
-  highScoreTableManager: {fileID: 0}
+  highScoreTableManager: {fileID: 1702671122}
 --- !u!4 &1702671120
 Transform:
   m_ObjectHideFlags: 0

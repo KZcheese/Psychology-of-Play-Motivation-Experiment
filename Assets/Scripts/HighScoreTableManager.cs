@@ -19,16 +19,6 @@ public class HighScoreTableManager : MonoBehaviour
 
     private void Awake()
     {
-        // Debug.Log("awake!");
-        //entryContainer = transform.Find("highScoreEntryContainer");
-        //entryContainer = transform.Find("body");
-        //Potential fix for this: Due to creation of "body" empty object, it could not find it's direct child anymore, so we have to find the child within the ody which is now the new child. So we would have to find the container once we have found body.
-        // _entryContainer = transform.Find("body").Find("highScoreEntryContainer");
-        // Debug.Log("entrycontainer " + transform.Find("body").Find("highScoreEntryContainer"));
-        // _entryTemplate = _entryContainer.Find("highScoreEntryTemplate");
-
-        _entryTemplate.gameObject.SetActive(false);
-
         _highScoreEntryList = new List<HighScoreEntry>
         {
             new HighScoreEntry {score = 458, name = "Elio", id = 1},
@@ -42,28 +32,26 @@ public class HighScoreTableManager : MonoBehaviour
             new HighScoreEntry {score = 64, name = "Paramveer", id = 4},
             new HighScoreEntry {score = 182, name = "jhoon", id = 10}
         };
+    }
 
-        //Sort entry list by score
-        for (int i = 0; i < _highScoreEntryList.Count - 1; i++)
-        {
-            for (int j = i + 1; j < _highScoreEntryList.Count; j++)
-            {
-                if(_highScoreEntryList[j].score > _highScoreEntryList[i].score)
-                {
-                    //Swap
-                    (_highScoreEntryList[i], _highScoreEntryList[j]) = (_highScoreEntryList[j], _highScoreEntryList[i]);
-                }
-            }
-        }
+    public void GenerateScoreBoard()
+    {
+        
+        // _entryContainer = transform.Find("highScoreEntryContainer");
+        // _entryContainer = transform.Find("body");
+        // Potential fix for this: Due to creation of "body" empty object, it could not find it's direct child anymore, so we have to find the child within the ody which is now the new child. So we would have to find the container once we have found body.
+         // _entryContainer = transform.Find("body").Find("highScoreEntryContainer");
+         // _entryTemplate = _entryContainer.Find("highScoreEntryTemplate");
 
+        _entryTemplate.gameObject.SetActive(false);
         _highScoreEntryTransformList = new List<Transform>();
+
+        _highScoreEntryList.Sort((x, y) => y.score.CompareTo(x.score));
 
         foreach (HighScoreEntry highScoreEntry in _highScoreEntryList)
         {
             CreateHighScoreEntryTransform(highScoreEntry, _entryContainer);
         }
-        Debug.Log(_highScoreEntryList);
-        Debug.Log(_highScoreEntryTransformList);
     }
 
     private void CreateHighScoreEntryTransform(HighScoreEntry highScoreEntry, Transform container)
@@ -77,9 +65,6 @@ public class HighScoreTableManager : MonoBehaviour
 
         string rankString = GenerateRankString(_highScoreEntryTransformList.Count + 1);
 
-        //Debug.Log(entryTransform.Find("posText"));
-        //Debug.Log(entryTransform.GetChild(0));
-
         //This GetChild() seems to work compared to find, so I will be creating transforms for each of the text boxes
         Transform posText = entryTransform.GetChild(Rank);
         Transform scoreText = entryTransform.GetChild(Score);
@@ -87,10 +72,6 @@ public class HighScoreTableManager : MonoBehaviour
         Transform idText = entryTransform.GetChild(ID);
 
         posText.GetComponent<Text>().text = rankString;
-
-        //entryTransform.Get = rankString;
-        //Debug.Log(entryTransform.Find("posText"));
-        //Debug.Log(entryTransform.Find("scoreText").GetComponent<Text>().text);
 
         //for testing we using a random number
         int score = highScoreEntry.score;
@@ -109,105 +90,34 @@ public class HighScoreTableManager : MonoBehaviour
     public void AddHighScore(int score, string name, int id)
     {
         bool existing = false;
-        foreach (Transform entryTransform in from entryTransform in _highScoreEntryTransformList
-                 let transformID = int.Parse(entryTransform.GetChild(ID).GetComponent<Text>().text)
-                 where id.Equals(transformID)
-                 select entryTransform)
+        foreach (HighScoreEntry highScoreEntry in _highScoreEntryList.Where(highScoreEntry => highScoreEntry.id.Equals(id)))
         {
-            // update score
-            entryTransform.GetChild(Score).GetComponent<Text>().text = score.ToString();
-
-            // update name (just in case it changed)
-            entryTransform.GetChild(Name).GetComponent<Text>().text = name;
+            highScoreEntry.score = score;
+            highScoreEntry.name = name;
             existing = true;
         }
 
         if(!existing)
-        {
-            HighScoreEntry newHighScore = new HighScoreEntry {score = score, name = name, id = id};
-            CreateHighScoreEntryTransform(newHighScore, _entryContainer);
-        }
-
-        // fix rankings to reflect changed score
-        SortScoreBoard();
-        // No longer used now that sorting swaps rankings
-        // RegenerateRankings();
+            _highScoreEntryList.Add(new HighScoreEntry {score = score, name = name, id = id});
     }
 
     public int GetHighScore(int id)
     {
-        foreach (Transform entryTransform in _highScoreEntryTransformList)
-        {
-            if(int.Parse(entryTransform.GetChild(ID).GetComponent<Text>().text).Equals(id))
-            {
-                return int.Parse(entryTransform.GetChild(Score).GetComponent<Text>().text);
-            }
-        }
-
-        return 0;
-        // return (from entryTransform in _highscoreEntryTransformList
-        //     where int.Parse(entryTransform.GetChild(ID).GetComponent<Text>().text).Equals(id)
-        //     select int.Parse(entryTransform.GetChild(Score).GetComponent<Text>().text)).FirstOrDefault();
-    }
-
-    private void SortScoreBoard() 
-    {
-        //Sort entry list by score
-        for (int i = 0; i < _highScoreEntryTransformList.Count - 1; i++)
-        {
-            for (int j = i + 1; j < _highScoreEntryTransformList.Count; j++)
-            {
-                int iScore = int.Parse(_highScoreEntryTransformList[i].GetChild(Score).GetComponent<Text>().text);
-                int jScore = int.Parse(_highScoreEntryTransformList[j].GetChild(Score).GetComponent<Text>().text);
-
-                if(jScore <= iScore) continue;
-                //Swap
-                (_highScoreEntryList[i], _highScoreEntryList[j]) = (_highScoreEntryList[j], _highScoreEntryList[i]);
-
-                //Swap Ranking
-                Text iRank = _highScoreEntryTransformList[i].GetChild(Rank).GetComponent<Text>();
-                Text jRank = _highScoreEntryTransformList[j].GetChild(Rank).GetComponent<Text>();
-                (iRank, jRank) = (jRank, iRank);
-            }
-        }
-    }
-
-    private void RegenerateRankings()
-    {
-        for (int i = 0; i < _highScoreEntryTransformList.Count; i++)
-        {
-            _highScoreEntryTransformList[i].GetChild(Rank).GetComponent<Text>().text = GenerateRankString(i + 1);
-        }
+        return _highScoreEntryList.FirstOrDefault(h => h.id.Equals(id))?.score ?? 0;
     }
 
     private static string GenerateRankString(int rank)
     {
-        string rankString;
-        Debug.Log("entering rank system");
-        switch (rank)
+        string rankString = rank switch
         {
-            default:
-                rankString = rank + "TH";
-                Debug.Log("entering switch system");
-                break;
-
-            case 1:
-                rankString = "1ST";
-                Debug.Log("entering switch system");
-                break;
-
-            case 2:
-                rankString = "2ND";
-                break;
-
-            case 3:
-                rankString = "3RD";
-                break;
-        }
+            1 => "1ST",
+            2 => "2ND",
+            3 => "3RD",
+            _ => rank + "TH"
+        };
 
         return rankString;
     }
-
 
     /*
      * Represents a single High Score Entry

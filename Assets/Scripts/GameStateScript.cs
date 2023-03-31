@@ -42,6 +42,7 @@ public class GameStateScript : MonoBehaviour
     {
         gameOverScreen.SetActive(false);
         highScoreScreen.SetActive(true);
+        highScoreTableManager.GenerateScoreBoard();
     }
 
     public void RestartGame()
