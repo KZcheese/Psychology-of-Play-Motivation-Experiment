@@ -739,6 +739,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _entryContainer: {fileID: 1720061162}
   _entryTemplate: {fileID: 799818413}
+  numEntries: 15
+  showAllEntries: 0
 --- !u!1 &1713428204
 GameObject:
   m_ObjectHideFlags: 0
