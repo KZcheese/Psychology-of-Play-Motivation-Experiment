@@ -8,6 +8,8 @@ public class HighScoreTableManager : MonoBehaviour
 {
     public Transform _entryContainer;
     public Transform _entryTemplate;
+    public int numEntries = 15;
+    public bool showAllEntries = false;
 
     private List<HighScoreEntry> _highScoreEntryList;
     private List<Transform> _highScoreEntryTransformList;
@@ -30,7 +32,14 @@ public class HighScoreTableManager : MonoBehaviour
             new HighScoreEntry {score = 100, name = "Will Hu", id = 101},
             new HighScoreEntry {score = 78, name = "Rami", id = 6},
             new HighScoreEntry {score = 64, name = "Paramveer", id = 4},
-            new HighScoreEntry {score = 182, name = "jhoon", id = 10}
+            new HighScoreEntry {score = 182, name = "jhoon", id = 10},
+            new HighScoreEntry {score = 182, name = "jhoon", id = 10},
+            new HighScoreEntry {score = 182, name = "jhoon", id = 10},
+            new HighScoreEntry {score = 182, name = "jhoon", id = 10},
+            new HighScoreEntry {score = 182, name = "jhoon", id = 10},
+            new HighScoreEntry {score = 182, name = "jhoon", id = 10},
+            new HighScoreEntry {score = 182, name = "jhoon", id = 10},
+            new HighScoreEntry {score = 182, name = "jhoon", id = 10},
         };
     }
 
@@ -48,9 +57,10 @@ public class HighScoreTableManager : MonoBehaviour
 
         _highScoreEntryList.Sort((x, y) => y.score.CompareTo(x.score));
 
-        foreach (HighScoreEntry highScoreEntry in _highScoreEntryList)
+        if(showAllEntries) numEntries = _highScoreEntryList.Count;
+        for(int i = 0; i < numEntries; i++)
         {
-            CreateHighScoreEntryTransform(highScoreEntry, _entryContainer);
+            CreateHighScoreEntryTransform(_highScoreEntryList[i], _entryContainer);
         }
     }
 
