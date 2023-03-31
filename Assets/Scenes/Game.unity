@@ -737,8 +737,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18151467760df5841bf6b9acab4eed5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _entryContainer: {fileID: 1720061162}
-  _entryTemplate: {fileID: 799818413}
+  entryContainer: {fileID: 1720061162}
+  entryTemplate: {fileID: 799818413}
   numEntries: 15
   showAllEntries: 0
 --- !u!1 &1713428204

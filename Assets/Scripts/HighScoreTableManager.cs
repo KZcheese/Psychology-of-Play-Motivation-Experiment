@@ -6,8 +6,8 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Transform))]
 public class HighScoreTableManager : MonoBehaviour
 {
-    public Transform _entryContainer;
-    public Transform _entryTemplate;
+    public Transform entryContainer;
+    public Transform entryTemplate;
     public int numEntries = 15;
     public bool showAllEntries = false;
 
@@ -27,40 +27,37 @@ public class HighScoreTableManager : MonoBehaviour
             new HighScoreEntry {score = 303, name = "AK", id = 11},
             new HighScoreEntry {score = 287, name = "William Maier", id = 16},
             new HighScoreEntry {score = 247, name = "Ziad", id = 12},
+            new HighScoreEntry {score = 182, name = "Jhoowon", id = 10},
             new HighScoreEntry {score = 130, name = "Kito", id = 15},
-            new HighScoreEntry {score = 99, name = "Samer", id = 13},
             new HighScoreEntry {score = 100, name = "Will Hu", id = 101},
+            new HighScoreEntry {score = 99, name = "Samer", id = 13},
             new HighScoreEntry {score = 78, name = "Rami", id = 6},
             new HighScoreEntry {score = 64, name = "Paramveer", id = 4},
-            new HighScoreEntry {score = 182, name = "jhoon", id = 10},
-            new HighScoreEntry {score = 182, name = "jhoon", id = 10},
-            new HighScoreEntry {score = 182, name = "jhoon", id = 10},
-            new HighScoreEntry {score = 182, name = "jhoon", id = 10},
-            new HighScoreEntry {score = 182, name = "jhoon", id = 10},
-            new HighScoreEntry {score = 182, name = "jhoon", id = 10},
-            new HighScoreEntry {score = 182, name = "jhoon", id = 10},
-            new HighScoreEntry {score = 182, name = "jhoon", id = 10},
+            new HighScoreEntry {score = 52, name = "Jake", id = 5},
+            new HighScoreEntry {score = 42, name = "Ajith", id = 9},
+            new HighScoreEntry {score = 22, name = "Tong Liu", id = 100},
+            new HighScoreEntry {score = 10, name = "yinan", id = 3},
+            new HighScoreEntry {score = 6, name = "Zhen Mou", id = 114514}
         };
     }
 
     public void GenerateScoreBoard()
     {
-        
         // _entryContainer = transform.Find("highScoreEntryContainer");
         // _entryContainer = transform.Find("body");
         // Potential fix for this: Due to creation of "body" empty object, it could not find it's direct child anymore, so we have to find the child within the ody which is now the new child. So we would have to find the container once we have found body.
-         // _entryContainer = transform.Find("body").Find("highScoreEntryContainer");
-         // _entryTemplate = _entryContainer.Find("highScoreEntryTemplate");
+        // _entryContainer = transform.Find("body").Find("highScoreEntryContainer");
+        // _entryTemplate = _entryContainer.Find("highScoreEntryTemplate");
 
-        _entryTemplate.gameObject.SetActive(false);
+        entryTemplate.gameObject.SetActive(false);
         _highScoreEntryTransformList = new List<Transform>();
 
         _highScoreEntryList.Sort((x, y) => y.score.CompareTo(x.score));
 
         if(showAllEntries) numEntries = _highScoreEntryList.Count;
-        for(int i = 0; i < numEntries; i++)
+        for (int i = 0; i < numEntries; i++)
         {
-            CreateHighScoreEntryTransform(_highScoreEntryList[i], _entryContainer);
+            CreateHighScoreEntryTransform(_highScoreEntryList[i], entryContainer);
         }
     }
 
@@ -68,7 +65,7 @@ public class HighScoreTableManager : MonoBehaviour
     {
         const float templateHeight = 40f;
 
-        Transform entryTransform = Instantiate(_entryTemplate, container);
+        Transform entryTransform = Instantiate(entryTemplate, container);
         RectTransform entryRectTransform = entryTransform.GetComponent<RectTransform>();
         entryRectTransform.anchoredPosition = new Vector2(0, -templateHeight * _highScoreEntryTransformList.Count);
         entryTransform.gameObject.SetActive(true);
