@@ -40,6 +40,18 @@ public class SaveManager : MonoBehaviour
             PlayerPrefs.GetInt(IDKey, 0)
         );
     }
+    
+    public static void SavePlayer(string name, int id)
+    {
+        PlayerPrefs.SetString(NameKey, name);
+        PlayerPrefs.SetInt(IDKey, id);
+        PlayerPrefs.Save();
+    }
+
+    public static int LoadHighScore()
+    {
+        return PlayerPrefs.GetInt(HighScoreKey);
+    }
 
     public static void SaveHighScore(int highScore)
     {
@@ -47,10 +59,5 @@ public class SaveManager : MonoBehaviour
         PlayerPrefs.Save();
     }
 
-    public static void SavePlayer(string name, int id)
-    {
-        PlayerPrefs.SetString(NameKey, name);
-        PlayerPrefs.SetInt(IDKey, id);
-        PlayerPrefs.Save();
-    }
+    
 }

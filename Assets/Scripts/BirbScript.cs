@@ -38,7 +38,6 @@ public class BirbScript : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D col)
     {
-        Debug.Log("Collision!");
         if(!col.gameObject.CompareTag("Obstacle")) return;
         gameState.GameOver();
     }
